@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS erm;
+
 CREATE DATABASE IF NOT EXISTS erm;
 
 USE erm;
@@ -15,3 +17,12 @@ CREATE TABLE Employees(
     company_id INT,
     FOREIGN KEY (company_id) REFERENCES Companies (id)
 );
+
+CREATE TABLE Payroll(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    amount DECIMAL,
+    employee_id INT,
+    FOREIGN KEY (employee_id) REFERENCES Employees (id),
+    company_id INT,
+    FOREIGN KEY (company_id) REFERENCES Companies (id)
+)
