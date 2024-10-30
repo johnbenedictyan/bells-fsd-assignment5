@@ -14,6 +14,7 @@ CREATE TABLE Employees(
     name VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    bio TEXT,
     company_id INT,
     FOREIGN KEY (company_id) REFERENCES Companies (id)
 );
