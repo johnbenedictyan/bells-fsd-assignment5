@@ -42,6 +42,27 @@ async function main() {
     res.render("employee-add", { companies });
   });
 
+  app.post("/employees/add", async function (req, res, next) {
+    let { name, title, email, companyId } = req.body;
+    let query =
+      "INSERT INTO Employees (name, title, email, company_id) VALUES (?,?,?,?)";
+    let bindings = [name, title, email, companyId];
+    await connection.execute(query, bindings);
+
+    res.redirect("/");
+  });
+
+  app.get("/employees/:id", async function (req, res, next) {
+    let [employees] = await connection.execute(
+      "SELECT Employees.id AS id, Employees.name AS name, Employees.title AS title, Employees.email AS email, Companies.name AS companyName, Companies.id AS companyId FROM Employees JOIN Companies WHERE Employees.company_id=Companies.id AND Employees.id = ?;",
+      [req.params.id]
+    );
+
+    console.log(employees[0]);
+
+    res.render("employee", { employee: employees[0] });
+  });
+
   app.get("/employees/:id/delete", async function (req, res, next) {
     let [employees] = await connection.execute(
       "SELECT Employees.id AS id, Employees.name AS name, Employees.title AS title, Employees.email AS email, Companies.name AS companyName, Companies.id AS companyId FROM Employees JOIN Companies WHERE Employees.id = ?;",
